@@ -49,25 +49,29 @@ function Login({ client, setpin, sendDetails }) {
               <label className="pin-label">Enter your PIN</label>
               <div>
                 <input
-                  type="number"
+                  maxLength="1"
+                  type="text"
                   className="no-spinner"
                   value={pin1}
                   onChange={(e) => setPin1(e.target.value)}
                 />
                 <input
-                  type="number"
+                  type="text"
                   className="no-spinner"
                   value={pin2}
+                  maxLength="1"
                   onChange={(e) => setPin2(e.target.value)}
                 />
                 <input
-                  type="number"
+                  type="text"
+                  maxLength="1"
                   className="no-spinner"
                   value={pin3}
                   onChange={(e) => setPin3(e.target.value)}
                 />
                 <input
-                  type="number"
+                  type="text"
+                  maxLength="1"
                   className="no-spinner"
                   value={pin4}
                   onChange={(e) => setPin4(e.target.value)}
