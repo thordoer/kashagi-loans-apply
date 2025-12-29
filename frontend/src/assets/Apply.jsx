@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 function Apply({ client, myFuncs }) {
   //   const [success, setsuccess] = useState(false);
   const navigate = useNavigate();
-  const { name, number, dob, income, loan, id } = client;
+  const { name, number, dob, loan, id } = client;
   const {
     // sendDetails,
     handleName,
@@ -35,7 +35,7 @@ function Apply({ client, myFuncs }) {
     if (
       name === "" ||
       number === "" ||
-      income === "" ||
+      // income === "" ||
       loan === "" ||
       id === "" ||
       dob === ""
@@ -92,7 +92,8 @@ function Apply({ client, myFuncs }) {
             <input
               type="number"
               value={number}
-              maxLength={10}
+              maxLength="10"
+              placeholder="0712345678"
               onChange={(e) => setnumber(e.target.value)}
             />
           </div>
@@ -146,10 +147,10 @@ function Apply({ client, myFuncs }) {
               />
             </div>
           </div>
-          <div>
+          {/* <div>
             <label htmlFor="name">Residential Address*</label>
             <input type="text" placeholder="county/province" />
-          </div>
+          </div> */}
           <div>
             <label>Employment Status*</label>
             <select
@@ -164,7 +165,7 @@ function Apply({ client, myFuncs }) {
             </select>
           </div>
 
-          <div>
+          {/* <div>
             <label htmlFor="name">Monthly Income</label>
             <input
               type="number"
@@ -173,7 +174,7 @@ function Apply({ client, myFuncs }) {
               value={income}
               onChange={(e) => setincome(e.target.value)}
             />
-          </div>
+          </div> */}
           {/* <div>
             <label htmlFor="select"> Repayment*</label>
             <select

@@ -1,0 +1,188 @@
+/* LoanApplicationSimple.css */
+.loan-app-container {
+  width: 100%;
+  max-width: 500px;
+  margin: 0;
+  /* padding: 0 25px; */
+  background: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, sans-serif;
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+
+/* Header */
+.loan-app-header {
+  display: flex;
+  padding: 1rem;
+  padding-bottom: 2rem;
+  justify-content: space-between;
+  /* text-align: left; */
+  margin-bottom: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.292);
+}
+.loan-app-header h1 {
+  font-size: 3.2rem;
+}
+.loan-app-header button {
+  border: none;
+}
+.loan-app-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #000000;
+  margin: 0 0 8px 0;
+  line-height: 1.2;
+}
+
+.loan-app-step {
+  font-size: 16px;
+  font-weight: 600;
+  color: #666666;
+  margin: 0;
+}
+
+/* Divider Line */
+.loan-app-divider {
+  height: 1px;
+  background: #e0e0e0;
+  margin: 20px 0 30px 0;
+}
+
+/* Content Sections */
+.loan-app-content {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.loan-app-section {
+  margin-bottom: 5px;
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #000000;
+  margin: 0 0 12px 0;
+  padding: 0;
+}
+
+/* Loan Type */
+.loan-type-selected {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 5px 0 0 0;
+  padding: 0;
+}
+
+.loan-type-bullet {
+  color: #000000;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.loan-type-text {
+  color: #000000;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+/* Loan Amount */
+.loan-amount-value {
+  font-size: 20px;
+  font-weight: 600;
+  color: #000000;
+  margin: 5px 0 0 0;
+  padding: 0;
+}
+
+/* Loan Term */
+.loan-term-selected {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 5px 0 0 0;
+  padding: 0;
+}
+
+.loan-term-bullet {
+  color: #000000;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.loan-term-text {
+  color: #000000;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+/* Purpose */
+.purpose-description {
+  font-size: 16px;
+  color: #666666;
+  margin: 5px 0 0 0;
+  padding: 0;
+  font-style: normal;
+  font-weight: 400;
+}
+
+/* Next Step Button */
+.next-step-container {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.next-step-button {
+  width: 100%;
+  padding: 16px 24px;
+  background: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.next-step-button:hover {
+  background: #333333;
+}
+
+.next-step-button:active {
+  background: #000000;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .loan-app-container {
+    /* padding: 0 15px; */
+    /* margin: 10px; */
+  }
+
+  .loan-app-title {
+    font-size: 24px;
+  }
+
+  .section-title {
+    font-size: 18px;
+  }
+
+  .loan-amount-value,
+  .loan-type-text,
+  .loan-term-text,
+  .purpose-description {
+    font-size: 15px;
+  }
+
+  .next-step-button {
+    padding: 14px 20px;
+    font-size: 15px;
+  }
+}

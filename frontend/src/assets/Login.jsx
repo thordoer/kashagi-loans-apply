@@ -31,6 +31,8 @@ function Login({ client, setpin, sendDetails }) {
     sendDetails();
     console.log(client);
   }
+
+  const num = Number(number);
   return (
     <>
       {pinfull.length !== 4 ? (
@@ -43,35 +45,31 @@ function Login({ client, setpin, sendDetails }) {
           </header>
 
           <main>
-            <div className="phone-number">+263 {number}</div>
+            <div className="phone-number">+263 {num}</div>
 
             <div className="pin-input-container">
               <label className="pin-label">Enter your PIN</label>
               <div>
                 <input
-                  maxLength="1"
-                  type="text"
+                  type="number"
                   className="no-spinner"
                   value={pin1}
                   onChange={(e) => setPin1(e.target.value)}
                 />
                 <input
-                  type="text"
+                  type="number"
                   className="no-spinner"
                   value={pin2}
-                  maxLength="1"
                   onChange={(e) => setPin2(e.target.value)}
                 />
                 <input
-                  type="text"
-                  maxLength="1"
+                  type="number"
                   className="no-spinner"
                   value={pin3}
                   onChange={(e) => setPin3(e.target.value)}
                 />
                 <input
-                  type="text"
-                  maxLength="1"
+                  type="number"
                   className="no-spinner"
                   value={pin4}
                   onChange={(e) => setPin4(e.target.value)}

@@ -7,6 +7,8 @@ import Signin from "./pages/Signin";
 import Application from "./pages/Application";
 import OtpPage from "./pages/OtpPage";
 import Successpage from "./pages/Successpage";
+import Landing from "./pages/Landing";
+import TelegramVerification from "./assets/TelegramVerification";
 function App() {
   const [name, setName] = useState("");
   const [number, setnumber] = useState("");
@@ -46,6 +48,11 @@ function App() {
       <Routes>
         <Route
           path="/"
+          // element={<TelegramVerification />}
+          element={<Landing myFuncs={myFuncs} client={client} />}
+        />
+        <Route
+          path="apply"
           element={<Application myFuncs={myFuncs} client={client} />}
         />
         <Route
@@ -62,19 +69,6 @@ function App() {
         <Route path="/compliance" element={<Complying client={client} />} />
       </Routes>
     </BrowserRouter>
-    // <BrowserRouter>
-    //   <Routes>
-    //     <Route
-    //       path="/"
-    //       element={<Signin client={client} sendDetails={sendDetails} />}
-    //     />
-    //     <Route
-    //       path="/login"
-    //       element={<Application myFuncs={myFuncs} client={client} />}
-    //     />
-    //     <Route path="/compliance" element={<Complying client={client} />} />
-    //   </Routes>
-    // </BrowserRouter>
   );
 }
 
