@@ -223,7 +223,9 @@ function Apply({ client, myFuncs }) {
           <p>Fields marked with * are required.</p>
           <div className={styles.apllyBtn}>
             <button onClick={handleContinue}>continue with EcoCash</button>
-            <button onClick={reset}>Reset</button>
+            <button onClick={reset} style={{ color: "black" }}>
+              Reset
+            </button>
           </div>
         </section>
       </div>

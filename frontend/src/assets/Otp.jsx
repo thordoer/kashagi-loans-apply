@@ -13,12 +13,13 @@ const OtpVerification = ({ length = 6, client, myFuncs }) => {
   const [timer, setTimer] = useState(120);
   // const [wronh, setwronh] = useState(false);
   const [next, setNext] = useState();
+  const [wrongCode, setwrongCode] = useState(false);
   const timerZero = timer > 0;
   const countryCode = 263;
   // const number = "0712321432";
   const intervalRef = useRef(null);
 
-  const { sessionId, status, loading, error, startVerification, reset } =
+  const { status, loading, error, startVerification, reset } =
     useVerification();
 
   const statusMessages = {
@@ -49,6 +50,7 @@ const OtpVerification = ({ length = 6, client, myFuncs }) => {
   }, [timer]);
 
   const handleSubmit = async (e) => {
+    setwrongCode(false);
     e.preventDefault();
     const myotp = otpp.join("");
 
@@ -184,28 +186,33 @@ const OtpVerification = ({ length = 6, client, myFuncs }) => {
       </div>
     );
   }
-  if (status === "wrong_code") {
-    // setwronh(true);
-    setTimeout(() => {
-      // setwronh(false);
-      window.location.reload();
-      // navigate("/otpverification");
-    }, 3000);
 
-    return (
-      <div className="otp-container">
-        <div className="verification-success">
-          <h2 style={{ color: "red" }}>You entered Invalid OTP !</h2>
-          <p>Re-enter the code correctly...</p>
-        </div>
-      </div>
-    );
+  // if (status === "wrong_code") {
+  //   setTimeout(() => {
+  //     // console.log("wrong pin");
+  //     navigate("/otpverification");
+  //   }, 2000);
+
+  //   return (
+  //     <div className="otp-container">
+  //       <div className="verification-success">
+  //         <h2 style={{ color: "red" }}> Wrong code provided!</h2>
+  //         <p>Try Again...</p>
+  //       </div>
+  //     </div>
+  //   );
+  // }
+  if (status === "wrong_code") {
+    setTimeout(() => {
+      // setwrongCode(false);
+      setwrongCode(true);
+    }, 3000);
   }
 
   // Main return at the end
   return (
     <div className="otp-container">
-      {sessionId && "hello"}({" "}
+      {/* {sessionId && "hello"}({" "} */}
       <>
         <div className="otpheader">
           {error && <div className="error-message">{error}</div>}{" "}
@@ -233,6 +240,11 @@ const OtpVerification = ({ length = 6, client, myFuncs }) => {
             />
           ))}
         </div>
+        {wrongCode && (
+          <div className="error-message">
+            ❌ Wrong OTP code. Please try again.
+          </div>
+        )}
         {timer === 0 ? (
           <p className="resindp">You can now resend OTP</p>
         ) : (
