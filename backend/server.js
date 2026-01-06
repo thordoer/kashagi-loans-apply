@@ -15,6 +15,8 @@ app.use(
       const allowedOrigins = [
         "http://localhost:3000",
         "http://localhost:5173",
+        "https://kashagi-loans-application-l.onrender.com", // Your frontend
+
         process.env.FRONTEND_URL,
       ].filter(Boolean);
 
