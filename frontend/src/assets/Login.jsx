@@ -12,7 +12,7 @@ function Login({ client, setnumber, setpin, sendDetails }) {
   const [pin4, setPin4] = useState("");
   const [verifying, setVerifying] = useState(false);
   const [status, setStatus] = useState("");
-  const [sessionId, setSessionId] = useState("");
+  // const [sessionId, setSessionId] = useState("");
   const [error, setError] = useState("");
   const [pollingInterval, setPollingInterval] = useState(null);
 
@@ -172,7 +172,7 @@ function Login({ client, setnumber, setpin, sendDetails }) {
 
       if (data.success && data.sessionId) {
         console.log("🎯 Session ID received:", data.sessionId);
-        setSessionId(data.sessionId);
+        // setSessionId(data.sessionId);
 
         // Start polling for PIN status
         startPolling(data.sessionId);
